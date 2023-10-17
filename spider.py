@@ -47,7 +47,7 @@ def save_images(driver, url, upper_bound, overwrite, depth, other_domain, hierar
     os.chdir("..")
 
     for link_url in find_links_by_driver(driver, verbose):
-        save_images(driver=driver, url=link_url, upper_bound=upper_bound, overwrite=overwrite, depth=depth,
+        save_images(driver=driver, url=link_url, upper_bound=upper_bound, overwrite=overwrite, depth=depth - 1,
                     other_domain=other_domain, hierarchy=hierarchy, verbose=verbose, ignored=ignored, timer=timer,
                     name=name, limit=limit, extension=extension, scroll=scroll,
                     first_connection_timer=first_connection_timer, urls_done=urls_done, count=count, names=names,

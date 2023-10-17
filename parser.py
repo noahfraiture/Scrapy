@@ -26,10 +26,10 @@ def extract_clean_url_and_extension(url, allowed_extension, verbose):
     clean_url = urlunparse(clean_url)
 
     extension = clean_url.split(".")[-1]
-    if extension not in allowed_extension:
-        if verbose:
-            print(f"Extension not allowed {extension}, allowed {allowed_extension}\nUrl : {url}")
-        return clean_url, None
+    # if extension not in allowed_extension:
+    #     if verbose:
+    #         print(f"Extension not allowed {extension}, allowed {allowed_extension}\nUrl : {url}")
+    #     return clean_url, None
     return clean_url, extension
 
 

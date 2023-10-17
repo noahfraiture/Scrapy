@@ -3,7 +3,7 @@ import re
 from io import BytesIO
 from PIL import Image, ImageSequence
 import requests
-from parser import extract_clean_url_and_extension, find_image_urls, create_filename
+from parser import extract_clean_url_and_extension, create_filename
 from driver import create_request_headers
 
 def download_image(url, main_url, overwrite, verbose, limit, allowed_extension, names, urls_done, count):
@@ -14,6 +14,7 @@ def download_image(url, main_url, overwrite, verbose, limit, allowed_extension, 
 
     clean_url, extension = extract_clean_url_and_extension(url, allowed_extension, verbose)
 
+    if extension not in allowed_extension: return
     if extension is None or '':
         extension = "jpg"
         if verbose:
@@ -45,7 +46,7 @@ def download_image(url, main_url, overwrite, verbose, limit, allowed_extension, 
         return
 
     img.save(filename)
-    #count += 1 # tfodo : it's a local variable, will never change
+    #count += 1 # todo : it's a local variable, will never change
     print(f"Image saved as {filename}")
 
 
