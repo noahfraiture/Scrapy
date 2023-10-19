@@ -7,10 +7,8 @@ from driver import connect_to_url, get_driver
 from parser import find_links_by_driver, find_image_urls, EXTENSIONS
 
 
-
 def save_images(driver, url, upper_bound, overwrite, depth, other_domain, hierarchy, verbose, ignored, timer, name,
                 limit, extension, scroll, first_connection_timer, urls_done, count, names, pound):
-
     if depth == 0:
         return
     if not url.startswith(upper_bound):
@@ -72,21 +70,35 @@ def check_if_ignored(url, ignored, verbose):
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("url", metavar='\b', type=str, help="URL to crawl")
-    parser.add_argument("--upper", metavar='\b', type=str, default=None, help="Upper bound for the number of URLs to crawl (default: None)")
-    parser.add_argument("--overwrite", metavar='\b', type=bool, default=False, help="Whether to overwrite existing files (default: False)")
-    parser.add_argument("--depth", metavar='\b', type=int, default=1, help="Depth of the crawl. Stop at 0. Use -1 to crawl all the website until the upper bound (default: 1)")
-    parser.add_argument("--domain", metavar='\b', type=int, default=0, help="Depth to include links from other domains (default: 0)")
-    parser.add_argument("--hierarchy", metavar='\b', type=bool, default=False, help="Create sub directories (default: False)")
-    parser.add_argument("--verbose", metavar='\b', type=bool, default=False, help="Create log file on the driver (default: False)")
-    parser.add_argument("--ignored", metavar='\b', type=str, default="", help="List of ignored urls separated by a comma. You can add * at the end of the url to ignore all the sub urls (default: \"\")")
-    parser.add_argument("--timer", metavar='\b', type=int, default=2, help="Timer in seconds to wait at every page (default: 2)")
-    parser.add_argument("--name", metavar='\b', type=str, default=None, help="Name of the folder to save the images (default: None)")
+    parser.add_argument("--upper", metavar='\b', type=str, default=None,
+                        help="Upper bound for the URLs to crawl (default: None)")
+    parser.add_argument("--overwrite", metavar='\b', type=bool, default=False,
+                        help="Whether to overwrite existing files (default: False)")
+    parser.add_argument("--depth", metavar='\b', type=int, default=1,
+                        help="Depth of the crawl. Stop at 0. Use -1 to crawl all the website until the upper bound (default: 1)")
+    parser.add_argument("--domain", metavar='\b', type=int, default=0,
+                        help="Depth to include links from other domains (default: 0)")
+    parser.add_argument("--hierarchy", metavar='\b', type=bool, default=False,
+                        help="Create sub directories (default: False)")
+    parser.add_argument("--verbose", metavar='\b', type=bool, default=False,
+                        help="Create log file on the driver (default: False)")
+    parser.add_argument("--ignored", metavar='\b', type=str, default="",
+                        help="List of ignored urls separated by a comma. You can add * at the end of the url to ignore all the sub urls (default: \"\")")
+    parser.add_argument("--timer", metavar='\b', type=int, default=2,
+                        help="Timer in seconds to wait at every page (default: 2)")
+    parser.add_argument("--name", metavar='\b', type=str, default=None,
+                        help="Name of the folder to save the images (default: None)")
     parser.add_argument("--limit", metavar='\b', type=int, default=-1, help="Limit of images to download (default: 1)")
-    parser.add_argument("--extension", metavar='\b', type=str, default="jpg gif", help="List of extension as string of the images to download. Ignore others (default: \"jpg gif\")")
-    parser.add_argument("--scroll", metavar='\b', type=int, default=0, help="Scroll down the page to load more images (default: 0)")
-    parser.add_argument("--timeout", metavar='\b', type=int, default=0, help="Timeout in seconds for the connection (default: 0)")
-    parser.add_argument("--connection", metavar='\b', type=int, default=0, help="Timer in seconds to wait at the first connection (default: 0)")
-    parser.add_argument("--pound", metavar='\b', type=bool, default=False, help="Pound says if pound (#) are important. (default: False)")
+    parser.add_argument("--extension", metavar='\b', type=str, default="jpg gif",
+                        help="List of extension as string of the images to download. Ignore others (default: \"jpg gif\")")
+    parser.add_argument("--scroll", metavar='\b', type=int, default=0,
+                        help="Scroll down the page to load more images (default: 0)")
+    parser.add_argument("--timeout", metavar='\b', type=int, default=0,
+                        help="Timeout in seconds for the connection (default: 0)")
+    parser.add_argument("--connection", metavar='\b', type=int, default=0,
+                        help="Timer in seconds to wait at the first connection (default: 0)")
+    parser.add_argument("--pound", metavar='\b', type=bool, default=False,
+                        help="Pound says if pound (#) are important. (default: False)")
     return parser.parse_args()
 
 
@@ -111,7 +123,7 @@ def main():
         names={},
         first_connection_timer=args.connection,
         urls_done=[],
-        count=0,
+        count=[0],
         pound=args.pound
     )
 
@@ -121,7 +133,7 @@ def start(url, upper_bound, overwrite, depth, other_domain, hierarchy, verbose, 
     driver = get_driver(timeout=timeout)
     names = {}
     urls_done = []
-    count = 0
+    count = [0]
     save_images(
         driver=driver,
         url=url,

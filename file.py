@@ -6,6 +6,7 @@ import requests
 from parser import extract_clean_url_and_extension, create_filename
 from driver import create_request_headers
 
+
 def download_image(url, main_url, overwrite, verbose, limit, allowed_extension, names, urls_done, count):
     if url in urls_done:
         if verbose: print(f"Url already done: {url}")
@@ -26,7 +27,7 @@ def download_image(url, main_url, overwrite, verbose, limit, allowed_extension, 
             print(f"File '{filename}' already exists in the folder")
         return
 
-    if limit != -1 and count >= limit:
+    if limit != -1 and count[0] >= limit:
         print(f"Limit reached: {limit}")
         exit()
 
@@ -43,10 +44,11 @@ def download_image(url, main_url, overwrite, verbose, limit, allowed_extension, 
 
     if extension == "gif" and img.is_animated:
         handle_animated_image(img, filename, verbose)
+        count[0] += 1
         return
 
     img.save(filename)
-    #count += 1 # todo : it's a local variable, will never change
+    count[0] += 1
     print(f"Image saved as {filename}")
 
 
@@ -56,12 +58,15 @@ def download_images(image_urls, main_url, overwrite, verbose, limit, extension, 
 
 
 def handle_animated_image(img, filename, verbose):
-    skip_frames = 5 # TODO : add option to resize or set limit of size
-    print(f"Number of pixels: {img.size[0] * img.size[1]}")
-    print(f"Number of frames: {img.n_frames}")
+    skip_frames = 5  # TODO : add option to resize or set limit of size
 
     frames = list(ImageSequence.Iterator(img))
     selected_frames = frames[::skip_frames]
+
+    if verbose:
+        print(f"Number of pixels: {img.size[0] * img.size[1]}")
+        print(f"Number of frames: {img.n_frames}")
+        print(f"Number of frames selected: {len(selected_frames)}")
 
     selected_frames[0].save(
         filename,
@@ -71,9 +76,10 @@ def handle_animated_image(img, filename, verbose):
         loop=0
     )
 
-    print(f"Size of the image: {os.path.getsize(filename)}")
-    print(f"Animated image saved as {filename}")
-    #count += 1
+    file_size = os.path.getsize(filename)
+    if verbose:
+        print(f"Animated image saved as {filename}")
+        print(f"Size of the image: {file_size}")
 
 
 def open_image(response, url):
