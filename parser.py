@@ -4,11 +4,15 @@ import numpy as np
 
 EXTENSIONS = ("jpg", "jpeg", "png", "gif", "webp")
 
+
 def find_image_urls(driver):
+    # TODO : seems to doesn't detect all images on fmteam.fr who has pound
     img_image = [url.get_attribute("src") for url in driver.find_elements(By.TAG_NAME, "img")]
-    img_image = [url for url in img_image if url is not None and any(ext in url for ext in EXTENSIONS) and "http" in url]
+    img_image = [url for url in img_image if
+                 url is not None and any(ext in url for ext in EXTENSIONS) and "http" in url]
     link_image = [url.get_attribute("href") for url in driver.find_elements(By.TAG_NAME, "link")]
-    link_image = [url for url in link_image if url is not None and any(ext in url for ext in EXTENSIONS) and "http" in url]
+    link_image = [url for url in link_image if
+                  url is not None and any(ext in url for ext in EXTENSIONS) and "http" in url]
 
     return img_image + link_image
 

@@ -2,6 +2,7 @@ import time
 import numpy as np
 import undetected_chromedriver as uc
 
+
 def random_user_agent():
     user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
@@ -15,7 +16,7 @@ def create_request_headers(main_url):
     rng_user = str(random_user_agent())
     headers = {
         "user-agent": rng_user,
-        'User-Agent': rng_user, # This is required for compatibility with some websites
+        'User-Agent': rng_user,  # This is required for compatibility with some websites
         "referer": main_url,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
         'Content-Type': 'image/jpeg, image/png, image/jpg, image/gif, image/webp',
@@ -33,7 +34,7 @@ def connect_to_url(driver, url, main_url, timer, first_connection_timer, scroll,
             time.sleep(first_connection_timer)
             urls_done.append(main_url)
         for _ in range(scroll):
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")  # TODO : detected by some websites
             time.sleep(timer)
     except Exception as e:
         print(f"Connection timeout. Error: {e}")
