@@ -4,11 +4,26 @@ from urllib.parse import urlparse, urlunparse
 import os
 from file import create_directory, create_subdirectories, exit_subdirectories, enter_subdirectories, download_images
 from driver import connect_to_url, get_driver
-from parser import find_links_by_driver, find_image_urls, EXTENSIONS
+from parser import find_links_by_driver, find_image_urls
 
 
 def save_images(driver, url, upper_bound, overwrite, depth, other_domain, hierarchy, verbose, ignored, timer, name,
-                limit, extension, scroll, first_connection_timer, urls_done, count, names, pound):
+                limit, extension, scroll, first_connection_timer, urls_done, count, names, pound, range_url):
+
+    if range_url != "" and "HERE" in url:
+        r = range_url.split("-")
+        if verbose: 
+            print(f"Range detected: {r}")
+            mean = (int(r[0]) + int(r[1])) // 2
+            print(f"Example: {url.replace('HERE', str(mean))}")
+        for i in range(int(r[0]), int(r[1])):
+            save_images(driver=driver, url=url.replace("HERE", str(i)), upper_bound=upper_bound, overwrite=overwrite,
+                        depth=depth, other_domain=other_domain, hierarchy=hierarchy, verbose=verbose, ignored=ignored,
+                        timer=timer, name=name, limit=limit, extension=extension, scroll=scroll,
+                        first_connection_timer=first_connection_timer, urls_done=urls_done, count=count, names=names,
+                        pound=pound, range_url="")
+        return
+
     if depth == 0:
         return
     if not url.startswith(upper_bound):
@@ -49,7 +64,7 @@ def save_images(driver, url, upper_bound, overwrite, depth, other_domain, hierar
                     other_domain=other_domain, hierarchy=hierarchy, verbose=verbose, ignored=ignored, timer=timer,
                     name=name, limit=limit, extension=extension, scroll=scroll,
                     first_connection_timer=first_connection_timer, urls_done=urls_done, count=count, names=names,
-                    pound=pound)
+                    pound=pound, range_url=range_url)
 
 
 def check_if_ignored(url, ignored, verbose):
@@ -99,6 +114,8 @@ def get_args():
                         help="Timer in seconds to wait at the first connection (default: 0)")
     parser.add_argument("--pound", metavar='\b', type=bool, default=False,
                         help="Pound says if pound (#) are important. (default: False)")
+    parser.add_argument("--range", metavar='\b', type=str, default="",
+                        help="Range of urls to crawl separated by a -. (default: empty")
     return parser.parse_args()
 
 
@@ -124,36 +141,8 @@ def main():
         first_connection_timer=args.connection,
         urls_done=[],
         count=[0],
-        pound=args.pound
-    )
-
-
-def start(url, upper_bound, overwrite, depth, other_domain, hierarchy, verbose, ignored,
-          timer, name, limit, extension, scroll, timeout, first_connection_timer, pound):
-    driver = get_driver(timeout=timeout)
-    names = {}
-    urls_done = []
-    count = [0]
-    save_images(
-        driver=driver,
-        url=url,
-        upper_bound=upper_bound if upper_bound is not None else url,
-        overwrite=overwrite,
-        depth=depth,
-        other_domain=other_domain,
-        hierarchy=hierarchy,
-        verbose=verbose,
-        ignored=ignored.split(","),
-        timer=timer,
-        name=name,
-        limit=limit,
-        extension=extension,
-        scroll=scroll,
-        names=names,
-        first_connection_timer=first_connection_timer,
-        urls_done=urls_done,
-        count=count,
-        pound=pound
+        pound=args.pound,
+        range_url=args.range
     )
 
 

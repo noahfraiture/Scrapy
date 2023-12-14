@@ -49,7 +49,7 @@ def download_image(url, main_url, overwrite, verbose, limit, allowed_extension, 
 
     img.save(filename)
     count[0] += 1
-    print(f"Image saved as {filename}")
+    if verbose: print(f"Image saved as {filename}")
 
 
 def download_images(image_urls, main_url, overwrite, verbose, limit, extension, names, urls_done, count):
@@ -61,7 +61,8 @@ def handle_animated_image(img, filename, verbose):
     skip_frames = 5  # TODO : add option to resize or set limit of size
 
     frames = list(ImageSequence.Iterator(img))
-    selected_frames = frames[::skip_frames]
+    # selected_frames = frames[::skip_frames]
+    selected_frames = frames
 
     if verbose:
         print(f"Number of pixels: {img.size[0] * img.size[1]}")
