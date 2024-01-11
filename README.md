@@ -1,6 +1,9 @@
 # Scrapy
 Scrapy is a Python script that allows you to scrape every image of a website. The script automatically finds other links and follows them following some rules.
-![Scrapy the mascot (Thx dall-e)](assets/mascot.jpeg)
+
+<img src="assets/mascot.jpeg" alt="Scrapy the mascot (Thx dall-e)" width="400"/>
+
+> This works pretty well, but not on every website, as each website handles images in a different way. Additionally, there are better tools already available, and I have already spent enough time trying to adapt this for every website. Therefore, I will no longer provide extensive support for this tool.
 
 ## Installation
 To install Scrapy, run the following command in a terminal:
@@ -27,7 +30,7 @@ Scrapy has a number of options that you can use to control its behavior. These o
 - --**ignored**: List of ignored urls separated by a comma. You can add * at the end of the url to ignore all the sub urls (default: "")
 - --**timer**: Timer in seconds to wait at every page (default: 2)
 - --**name**: Name of the folder to save the images (default: None)
-- --**limit**: Limit of images to download (default: 1)
+- --**limit**: Limit of images to download (default: -1)
 - --**extension**: List of extension as string of the images to download. Ignore others (default: "jpg gif")
 - --**scroll**: Scroll down the page to load more images (default: 0)
 - --**timeout**: Timeout in seconds for the connection (default: 0)
