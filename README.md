@@ -1,4 +1,7 @@
 # Scrapy
+
+> **Disclaimer:** Some parts of this repository have been replaced by [coma](https://github.com/noahfraiture/coma). While coma does not offer the full image scraping capabilities of Scrapy yet, it provides additional features and greater flexibility. Additionally, coma is written in Rust, making it more robust compared to Scrapy, which has become increasingly difficult to maintain.
+
 Scrapy is a Python script that allows you to scrape every image of a website. The script automatically finds other links and follows them following some rules.
 
 <img src="assets/mascot.jpeg" alt="Scrapy the mascot (Thx dall-e)" width="400"/>
